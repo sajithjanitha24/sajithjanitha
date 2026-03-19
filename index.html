@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sajith Wanasinghe — Electrical Engineer & AI Enthusiast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <!-- EmailJS SDK — sign up at https://emailjs.com, get your keys and replace below -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* ── Variables ──────────────────────────────────────────────── */
+    :root {
+      --bg:      #0a0d12;
+      --surface: #111520;
+      --card:    #161c2b;
+      --border:  rgba(255,255,255,0.07);
+      --accent:  #00e5a0;
+      --accent2: #3d9aff;
+      --gold:    #f5c842;
+      --text:    #e8ecf5;
+      --muted:   #6b7691;
+      --font-h:  'Syne', sans-serif;
+      --font-b:  'DM Sans', sans-serif;
+      --font-m:  'DM Mono', monospace;
+    }
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ── Noise overlay ──────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Grid lines background ──────────────────────────────────── */
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────── */
+    .wrapper { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ─────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(10,13,18,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1140px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-family: var(--font-h);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      font-family: var(--font-m);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* visitor badge */
+    .visitor-badge {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-m); font-size: 0.72rem;
+      color: var(--muted);
+      background: rgba(0,229,160,0.06);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 20px; padding: 4px 12px;
+    }
+    .visitor-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── Hero ────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(61,154,255,0.08) 0%, transparent 70%);
+      bottom: 50px; left: -100px;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-m); font-size: 0.75rem;
+      color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px solid rgba(0,229,160,0.3);
+      border-radius: 4px; padding: 5px 12px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .hero-name {
+      font-family: var(--font-h);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero-name span { color: var(--accent); }
+    .hero-role {
+      font-family: var(--font-m);
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-desc {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: rgba(232,236,245,0.7);
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .hero-cta {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #0a0d12;
+      font-family: var(--font-h); font-weight: 700; font-size: 0.9rem;
+      padding: 13px 28px; border-radius: 6px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,229,160,0.35);
+    }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text);
+      font-family: var(--font-h); font-weight: 600; font-size: 0.9rem;
+      padding: 13px 28px; border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(0,229,160,0.06); }
+
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 60px;
+      animation: fadeUp 0.6s 0.5s ease both;
+      border-top: 1px solid var(--border); padding-top: 40px;
+    }
+    .stat-item { }
+    .stat-num {
+      font-family: var(--font-h); font-size: 2rem; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Section commons ─────────────────────────────────────────── */
+    section { padding: 100px 0; }
+    .section-label {
+      font-family: var(--font-m); font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-h); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-desc { color: var(--muted); max-width: 500px; font-size: 1rem; }
+    .section-head { margin-bottom: 60px; }
+
+    /* ── About ───────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+      align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-box {
+      width: 100%; aspect-ratio: 4/5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .about-initials {
+      font-family: var(--font-h); font-size: 7rem; font-weight: 800;
+      color: rgba(0,229,160,0.15); letter-spacing: -0.05em;
+      user-select: none;
+    }
+    .about-badge {
+      position: absolute; bottom: -16px; right: -16px;
+      background: var(--accent); color: #0a0d12;
+      font-family: var(--font-h); font-weight: 700; font-size: 0.8rem;
+      padding: 10px 18px; border-radius: 8px;
+    }
+    .about-corner {
+      position: absolute; top: -1px; left: -1px;
+      width: 40px; height: 40px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+      border-radius: 12px 0 0 0;
+    }
+    .about-text p { color: rgba(232,236,245,0.75); margin-bottom: 16px; font-size: 1rem; }
+    .about-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chip {
+      font-family: var(--font-m); font-size: 0.72rem;
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 5px 12px; color: var(--muted);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Skills ──────────────────────────────────────────────────── */
+    #skills { background: var(--surface); }
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 24px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .skill-card:hover { border-color: rgba(0,229,160,0.4); transform: translateY(-4px); }
+    .skill-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .skill-name {
+      font-family: var(--font-h); font-weight: 700; font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .skill-tag {
+      font-family: var(--font-m); font-size: 0.68rem;
+      background: rgba(0,229,160,0.07);
+      color: var(--accent); border-radius: 3px;
+      padding: 3px 8px;
+    }
+
+    /* ── Projects ────────────────────────────────────────────────── */
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .project-card:hover { border-color: rgba(0,229,160,0.35); transform: translateY(-4px); }
+    .project-card.featured { grid-column: span 2; }
+    .project-num {
+      font-family: var(--font-m); font-size: 0.7rem;
+      color: var(--muted); letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .project-title {
+      font-family: var(--font-h); font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 12px; letter-spacing: -0.02em;
+    }
+    .project-desc { color: rgba(232,236,245,0.65); font-size: 0.95rem; margin-bottom: 20px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .project-tag {
+      font-family: var(--font-m); font-size: 0.68rem;
+      border: 1px solid var(--border); border-radius: 3px;
+      padding: 3px 10px; color: var(--muted);
+    }
+    .project-accent {
+      position: absolute; top: 0; right: 0;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle at top right, rgba(0,229,160,0.1), transparent 70%);
+    }
+
+    /* ── Certifications ──────────────────────────────────────────── */
+    #certifications { background: var(--surface); }
+    .cert-list { display: grid; gap: 16px; }
+    .cert-item {
+      display: flex; align-items: center; gap: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px;
+      transition: border-color 0.2s;
+    }
+    .cert-item:hover { border-color: rgba(245,200,66,0.4); }
+    .cert-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(245,200,66,0.5);
+    }
+    .cert-name { font-family: var(--font-h); font-weight: 600; font-size: 0.95rem; }
+    .cert-year { font-family: var(--font-m); font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+    .cert-badge {
+      margin-left: auto; flex-shrink: 0;
+      font-family: var(--font-m); font-size: 0.68rem;
+      background: rgba(245,200,66,0.1);
+      color: var(--gold); border-radius: 4px; padding: 4px 10px;
+    }
+
+    /* ── Contact ─────────────────────────────────────────────────── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; align-items: start; }
+    .contact-info { }
+    .contact-link {
+      display: flex; align-items: center; gap: 14px;
+      color: var(--muted); font-size: 0.9rem;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link-icon { font-size: 1rem; width: 20px; }
+
+    /* Message form */
+    .msg-form {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 36px;
+    }
+    .form-title {
+      font-family: var(--font-h); font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .form-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-family: var(--font-m); font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 6px;
+      color: var(--text); font-family: var(--font-b); font-size: 0.9rem;
+      padding: 12px 16px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: rgba(0,229,160,0.5); }
+    .form-group textarea { height: 130px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-send {
+      width: 100%; background: var(--accent); color: #0a0d12;
+      font-family: var(--font-h); font-weight: 700; font-size: 0.95rem;
+      border: none; border-radius: 6px; padding: 14px;
+      cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+      margin-top: 6px;
+    }
+    .btn-send:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .form-status {
+      text-align: center; margin-top: 14px;
+      font-family: var(--font-m); font-size: 0.82rem;
+      min-height: 20px;
+    }
+    .form-status.success { color: var(--accent); }
+    .form-status.error { color: #ff6b6b; }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      font-family: var(--font-m);
+      font-size: 0.75rem; color: var(--muted);
+    }
+    footer span { color: var(--accent); }
+
+    /* ── Scroll reveal ───────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid, .projects-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .project-card.featured { grid-column: span 1; }
+      .nav-links { display: none; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- ── NAV ────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">SW.</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certs</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="visitor-badge">
+      <span class="visitor-dot"></span>
+      <span id="visitor-count">— visitors</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="wrapper">
+    <div class="hero-content">
+      <div class="hero-tag">Available for Internships &amp; Opportunities</div>
+      <h1 class="hero-name">Sajith<br /><span>Wanasinghe</span></h1>
+      <p class="hero-role">// Electrical &amp; Electronics Engineer · AI/ML Developer · Youth Entrepreneur</p>
+      <p class="hero-desc">
+        Building efficient, real-world electrical solutions — from power systems to intelligent machine learning pipelines. Based in Sri Lanka, thinking globally.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Get in Touch →</a>
+        <a href="#projects" class="btn-outline">View Projects</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">4+</div>
+          <div class="stat-label">Certifications</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Major Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Years Engineering</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:var(--accent2);" id="hero-visitor">—</div>
+          <div class="stat-label">Portfolio Visitors</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────────────────────────── -->
+<section id="about">
+  <div class="wrapper">
+    <div class="about-grid reveal">
+      <div class="about-img-wrap">
+        <div class="about-img-box">
+          <div class="about-initials">SW</div>
+          <div class="about-corner"></div>
+        </div>
+        <div class="about-badge">HNDE · SLIATE Colombo</div>
+      </div>
+      <div class="about-text">
+        <div class="section-label">About Me</div>
+        <h2 class="section-title">Engineering the future, one circuit at a time.</h2>
+        <p>
+          I'm a second-year Electrical &amp; Electronics Engineering student at SLIATE Colombo with a deep passion for power engineering and sustainable innovation. My work bridges traditional electrical engineering with modern AI/ML technologies.
+        </p>
+        <p>
+          As a youth entrepreneur, I've designed real-world solutions that address pressing challenges — most notably an eco-friendly elephant repellent system that uses honeybee pheromones instead of harmful electric fencing.
+        </p>
+        <p>
+          I'm actively seeking internship opportunities at multinational companies where I can apply my skills, grow rapidly, and contribute to meaningful engineering projects.
+        </p>
+        <div class="about-chips">
+          <div class="chip">Power Systems</div>
+          <div class="chip">MATLAB / Simulink</div>
+          <div class="chip">Python</div>
+          <div class="chip">AI / ML</div>
+          <div class="chip">Circuit Design</div>
+          <div class="chip">Sustainable Engineering</div>
+          <div class="chip">Data Science</div>
+          <div class="chip">Technical Communication</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ─────────────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="wrapper">
+    <div class="section-head reveal">
+      <div class="section-label">What I Do</div>
+      <h2 class="section-title">Technical Expertise</h2>
+      <p class="section-desc">A multidisciplinary toolkit spanning electrical engineering, software, and AI.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">Power Engineering</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Electrical machines, power systems analysis, control systems, and circuit design.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Power Systems</span>
+          <span class="skill-tag">Control Systems</span>
+          <span class="skill-tag">Schematics</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔬</div>
+        <div class="skill-name">MATLAB / Simulink</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Simulation, signal processing, and numerical computing for engineering analysis.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Simulation</span>
+          <span class="skill-tag">Signal Processing</span>
+          <span class="skill-tag">Numerical Methods</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">Python Development</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">ML pipelines, data analysis, and automation scripting.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">NumPy</span>
+          <span class="skill-tag">Pandas</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">AI / Machine Learning</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">End-to-end ML engineering, data science, and prompt engineering.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">ML Engineering</span>
+          <span class="skill-tag">Data Science</span>
+          <span class="skill-tag">Prompt Eng.</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🌱</div>
+        <div class="skill-name">Sustainable Innovation</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Biomimicry-driven engineering for real-world environmental challenges.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Biomimicry</span>
+          <span class="skill-tag">Eco Design</span>
+          <span class="skill-tag">R&D</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">Technical Communication</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0">Research documentation, project reporting, and engineering presentations.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Documentation</span>
+          <span class="skill-tag">Reporting</span>
+          <span class="skill-tag">GitHub</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ───────────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="wrapper">
+    <div class="section-head reveal">
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-desc">Real-world solutions built at the intersection of engineering and innovation.</p>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card featured reveal">
+        <div class="project-accent"></div>
+        <div class="project-num">01 · Featured</div>
+        <div class="project-title">Eco-Friendly Elephant Repellent System</div>
+        <p class="project-desc">
+          Designed a sustainable alternative to electric fencing for human-elephant conflict mitigation. The system uses sensor-triggered honeybee pheromone diffusion to deter elephants without harm — a biomimicry-first approach commended by the SLIATE faculty panel.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Biomimicry</span>
+          <span class="project-tag">Sensor Circuits</span>
+          <span class="project-tag">Sustainable Eng.</span>
+          <span class="project-tag">Automation</span>
+          <span class="project-tag">SLIATE Capstone</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-num">02</div>
+        <div class="project-title">AI/ML Engineering Pipeline</div>
+        <p class="project-desc">
+          Built end-to-end machine learning workflows in Python for classification and regression tasks. Applied preprocessing, feature engineering, and model evaluation with version-controlled GitHub documentation.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">ML</span>
+          <span class="project-tag">GitHub</span>
+          <span class="project-tag">Data Science</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-num">03</div>
+        <div class="project-title">Power Systems Simulation (MATLAB)</div>
+        <p class="project-desc">
+          Conducted electrical machine and power system simulations using MATLAB/Simulink as part of coursework and independent study, analysing system stability and efficiency under varied load conditions.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">MATLAB</span>
+          <span class="project-tag">Simulink</span>
+          <span class="project-tag">Power Systems</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS ─────────────────────────────────────────────── -->
+<section id="certifications">
+  <div class="wrapper">
+    <div class="section-head reveal">
+      <div class="section-label">Credentials</div>
+      <h2 class="section-title">Certifications</h2>
+      <p class="section-desc">Professional development completed alongside full-time engineering studies.</p>
+    </div>
+    <div class="cert-list">
+      <div class="cert-item reveal">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">AI/ML Engineer — Stage 1</div>
+          <div class="cert-year">2024</div>
+        </div>
+        <div class="cert-badge">Certified</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">AI/ML Engineering — Stage 2</div>
+          <div class="cert-year">2024</div>
+        </div>
+        <div class="cert-badge">Certified</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Data Science &amp; Analytics</div>
+          <div class="cert-year">2024</div>
+        </div>
+        <div class="cert-badge">Certified</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Python for Beginners</div>
+          <div class="cert-year">2024</div>
+        </div>
+        <div class="cert-badge">Certified</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Prompt Engineering for Everyone</div>
+          <div class="cert-year">2024</div>
+        </div>
+        <div class="cert-badge">Certified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="wrapper">
+    <div class="section-head reveal">
+      <div class="section-label">Let's Connect</div>
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-desc">Open to internships, collaborations, and exciting engineering opportunities.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <a class="contact-link" href="mailto:official.sajithjanitha24@gmail.com">
+          <span class="contact-link-icon">✉</span>
+          official.sajithjanitha24@gmail.com
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/sajithjwanasinghe3" target="_blank" rel="noopener">
+          <span class="contact-link-icon">in</span>
+          linkedin.com/in/sajithjwanasinghe3
+        </a>
+        <a class="contact-link" href="https://sajithjanitha24.github.io/sajithjanitha" target="_blank" rel="noopener">
+          <span class="contact-link-icon">◉</span>
+          sajithjanitha24.github.io/sajithjanitha
+        </a>
+        <a class="contact-link" href="#">
+          <span class="contact-link-icon">◎</span>
+          Badulla District, Uva Province, Sri Lanka
+        </a>
+        <div style="margin-top:40px;">
+          <p style="font-size:0.85rem;color:var(--muted);line-height:1.8;">
+            I'm currently in my second year of HNDE and actively seeking internship opportunities in power engineering, AI, or any engineering domain where I can make an impact.<br><br>
+            Don't hesitate to reach out — I reply to every message.
+          </p>
+        </div>
+      </div>
+
+      <!-- ── MESSAGE BOX ──────────────────────────────────────────── -->
+      <div class="msg-form">
+        <div class="form-title">Send a Message</div>
+        <div class="form-sub">Your message will arrive directly in Sajith's inbox.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="f-name" placeholder="John Smith" />
+          </div>
+          <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" id="f-email" placeholder="john@company.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" id="f-subject" placeholder="Internship Opportunity" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="f-message" placeholder="Hi Sajith, I'd like to discuss..."></textarea>
+        </div>
+        <button class="btn-send" id="send-btn" onclick="sendMessage()">Send Message →</button>
+        <div class="form-status" id="form-status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer>
+  <div class="wrapper">
+    <p>Built with passion · <span>Sajith Wanasinghe</span> © 2025 · Badulla, Sri Lanka</p>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────────────── -->
+<script>
+  /* ────────────────────────────────────────────────────────────────
+     EMAILJS SETUP (3 steps — do this in VS Code):
+     1. Go to https://emailjs.com → sign up (free)
+     2. Add Email Service (Gmail) → copy your SERVICE_ID
+     3. Create Email Template with variables:
+          {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+        → copy your TEMPLATE_ID
+     4. Go to Account → copy your PUBLIC_KEY
+     5. Replace the three placeholders below:
+  ────────────────────────────────────────────────────────────────── */
+  const EMAILJS_PUBLIC_KEY  = '-VmszsS0B4DiFThti';   // ← replace
+  const EMAILJS_SERVICE_ID  = 'service_qym1bo7';   // ← replace
+  const EMAILJS_TEMPLATE_ID = 'template_zmqgr2n';  // ← replace
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  function sendMessage() {
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const subject = document.getElementById('f-subject').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+    const status  = document.getElementById('form-status');
+    const btn     = document.getElementById('send-btn');
+
+    if (!name || !email || !message) {
+      status.textContent = '⚠ Please fill in your name, email, and message.';
+      status.className = 'form-status error';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.textContent = '';
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      from_name:  name,
+      from_email: email,
+      subject:    subject || '(No subject)',
+      message:    message,
+      to_email:   'official.sajithjanitha24@gmail.com'
+    }).then(() => {
+      status.textContent = '✓ Message sent! Sajith will reply soon.';
+      status.className = 'form-status success';
+      btn.textContent = 'Sent ✓';
+      document.getElementById('f-name').value    = '';
+      document.getElementById('f-email').value   = '';
+      document.getElementById('f-subject').value = '';
+      document.getElementById('f-message').value = '';
+    }).catch(err => {
+      console.error(err);
+      status.textContent = '✗ Failed to send. Please email directly.';
+      status.className = 'form-status error';
+      btn.disabled = false;
+      btn.textContent = 'Send Message →';
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     REAL-TIME VISITOR COUNTER
+     Using CountAPI (free, no account needed).
+     The key "sajith-wanasinghe-portfolio-2025" is unique to you.
+     Hits are persisted on countapi.xyz servers.
+  ────────────────────────────────────────────────────────────────── */
+  async function initVisitorCounter() {
+    try {
+      const res  = await fetch('https://api.countapi.xyz/hit/sajith-wanasinghe-portfolio/visits');
+      const data = await res.json();
+      const n    = data.value.toLocaleString();
+      document.getElementById('visitor-count').textContent = n + ' visitors';
+      document.getElementById('hero-visitor').textContent  = n;
+    } catch {
+      document.getElementById('visitor-count').textContent = '— visitors';
+    }
+  }
+  initVisitorCounter();
+
+  /* ────────────────────────────────────────────────────────────────
+     SCROLL REVEAL
+  ────────────────────────────────────────────────────────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 0.07) + 's';
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Smooth active nav highlight ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--accent)' : '';
+    });
+  });
+</script>
+
+</body>
+</html>
